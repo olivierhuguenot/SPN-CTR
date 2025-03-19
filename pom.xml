@@ -8,7 +8,7 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>SPN-CTR-Exercise</name>
+    <name>SPNmodeCTR-CTR-Exercise</name>
     <description>A basic Maven project using Java 23</description>
 
     <properties>
