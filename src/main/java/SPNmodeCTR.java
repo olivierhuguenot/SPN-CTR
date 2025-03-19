@@ -7,8 +7,8 @@ public class SPNmodeCTR {
     final private int n = 4;
     final private int m = 4;
 
-    final static private String[] sBox = {"1110", "0100", "1101", "0001", "0010", "1111",
-            "1011", "1000", "0011", "1010", "0110", "1100", "0101", "1001", "0000", "0111"};
+    final static private int[] sBox = {14, 4, 13, 1, 2, 15,
+            11, 8, 3, 10, 6, 12, 5, 9, 0, 7};
 
     // CTR Algorithm
 
@@ -21,7 +21,7 @@ public class SPNmodeCTR {
         System.out.println("Keys: " + Arrays.toString(keys));
 
         // Das zufällige Y-1 berechnen
-        String y = generateRandomY();
+        int y = generateRandomY();
         System.out.println("Y-1: " + y);
 
         // SPN: Y mit Schlüssel verschlüsseln
@@ -34,32 +34,31 @@ public class SPNmodeCTR {
 
     // SPN Algorithm
 
-    public static String spnAlgorithm(String yMinus, String[] keys) {
+    public static String spnAlgorithm(int yMinus, String[] keys) {
         for(int i = 0; i < 4; i++) {
+            // Schlüssel
 
-            // y0 = yMinus + i
-            int y = (Integer.parseInt(yMinus, 2) + i) % 16;
+            // y0 = yMinus + i (Modulo falls Zahl grösser wird als 15)
+            int y = (yMinus + i) % 16;
+            System.out.println(y);
 
             // Initialer Weisschritt: y0 XOR k[0]
             y = y ^ Integer.parseInt(keys[0], 2);
+            System.out.println("Weissschritt: " + y);
 
             // Regulärer Schritt: y1 -> S-Box -> Bitpermutation -> XOR mit k[1]
-            y = Integer.parseInt(sBox[y], 2);
-
+            y = sBox[y];
 
             // Regulärer Schritt: y2
             // Letzte Verkürzte Runde: y3 XOR k[3]
         }
-
-
-
         return null;
     }
 
-    public static String generateRandomY() {
+    public static int generateRandomY() {
         Random random = new Random();
-        int randomNumber = random.nextInt(1 << 4);
-        return String.format("%4s", Integer.toBinaryString(randomNumber)).replace(' ', '0');
+        return random.nextInt(16);
+
     }
 
     public static int sInvers(int xi) {
