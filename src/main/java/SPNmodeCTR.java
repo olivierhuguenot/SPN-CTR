@@ -1,4 +1,4 @@
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Random;
 
 public class SPNmodeCTR {
@@ -7,63 +7,66 @@ public class SPNmodeCTR {
     final private int n = 4;
     final private int m = 4;
 
-    final private String[] sBox = {"1110", "0100", "1101", "0001", "0010", "1111",
+    final static private String[] sBox = {"1110", "0100", "1101", "0001", "0010", "1111",
             "1011", "1000", "0011", "1010", "0110", "1100", "0101", "1001", "0000", "0111"};
-    final private String y = "";
-
-    // SPN Algorithm
-
-    public String spnAlgorithm(String x, String key) {
-        // 16er Klartext Block kommt rein
-        // 16er Schlüssel Block kommt rein
-
-        // Ein zufälliges y berechnen
-        Random random = new Random();
-        int randomNumber = random.nextInt(1 << 16);
-        String y = String.format("%16s", Integer.toBinaryString(randomNumber)).replace(' ', '0');
-        System.out.println(y);
-
-        // Die 4 benötigten Index der S-Box berechnen
-        int[] sBoxIndexes = new int[4];
-        for(int i = 0; i < 4; i++) {
-            sBoxIndexes[i] = Integer.parseInt(x.substring(i, (i * 3) + 1), 2);
-        }
-
-
-
-        // Random Y mit Schlüssel verschlüsseln
-        // Initialer Weissschritt
-
-        //Reguläre Runde
-        for(int i = 2; i < r; i++) {
-            // S-Box
-            // Bitpermutation
-        }
-
-        // Letzte Verkürzte Runde
-
-        return null;
-    }
-
-    public int binaryToInt(int xi) {
-        return 0;
-    }
-
-    public int sInvers(int xi) {
-        return 0;
-    }
-
-    public int permutation(int xi) {
-        return 0;
-    }
 
     // CTR Algorithm
 
-    public String ctrAlgorithm() {
+    public static String ctrAlgorithm(String x, String key) {
+        // 16er Klartext Block kommt rein
+        // 16er Schlüssel Block kommt rein
+
+        // Die 5 Schlüssel
+        String[] keys = {key.substring(0,16), key.substring(4,20), key.substring(8,24), key.substring(12,28), key.substring(16,32)};
+        System.out.println("Keys: " + Arrays.toString(keys));
+
+        // Das zufällige Y-1 berechnen
+        String y = generateRandomY();
+        System.out.println("Y-1: " + y);
+
+        // SPN: Y mit Schlüssel verschlüsseln
+        spnAlgorithm(y, keys);
+
         return null;
     }
 
-    public String generateRandomY() {
+
+
+    // SPN Algorithm
+
+    public static String spnAlgorithm(String yMinus, String[] keys) {
+        for(int i = 0; i < 4; i++) {
+
+            // y0 = yMinus + i
+            int y = (Integer.parseInt(yMinus, 2) + i) % 16;
+
+            // Initialer Weisschritt: y0 XOR k[0]
+            y = y ^ Integer.parseInt(keys[0], 2);
+
+            // Regulärer Schritt: y1 -> S-Box -> Bitpermutation -> XOR mit k[1]
+            y = Integer.parseInt(sBox[y], 2);
+
+
+            // Regulärer Schritt: y2
+            // Letzte Verkürzte Runde: y3 XOR k[3]
+        }
+
+
+
         return null;
+    }
+
+    public static String generateRandomY() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(1 << 4);
+        return String.format("%4s", Integer.toBinaryString(randomNumber)).replace(' ', '0');
+    }
+
+    public static int sInvers(int xi) {
+        return 0;
+    }
+
+    public static int permutation(int xi) {
+        return 0;
     }
 }

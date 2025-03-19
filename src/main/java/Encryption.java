@@ -5,6 +5,7 @@ public class Encryption {
         String encoded = asciiEncoding(x);
 
         // x in 16er blöcke aufteilen
+        SPNmodeCTR.ctrAlgorithm("0011110011011110", "00111010100101001101011000111111");
 
         // y-1 zufällig wählen
 
@@ -40,6 +41,6 @@ public class Encryption {
     }
 
     public static void main(String[] args) {
-        System.out.println(encrypt("abc", "00111010100101001101011000111111"));
+        System.out.println("Encrypted: " + encrypt("abc", "00111010100101001101011000111111"));
     }
 }
