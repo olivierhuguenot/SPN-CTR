@@ -5,7 +5,8 @@ public class Encryption {
         String encoded = asciiEncoding(x);
 
         // Gesamter Klartext übergeben
-        SPNmodeCTR.ctrAlgorithm("0011110011011110", "00111010100101001101011000111111");
+        String result = SPNmodeCTR.ctrAlgorithm("0011110011011110", "00111010100101001101011000111111");
+        System.out.println("Result: " + result);
 
         // y-1 zufällig wählen
 
