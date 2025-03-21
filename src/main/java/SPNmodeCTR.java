@@ -13,8 +13,8 @@ public class SPNmodeCTR {
     // CTR Algorithm
 
     public static String ctrAlgorithm(String x, String key) {
-        // 16er Klartext Block kommt rein
-        // 16er Schlüssel Block kommt rein
+        // Erhalte durch 16 Teilbarer Klartext
+        // Erhalte 16 Bit langer Schlüssel
 
         // Die 5 Schlüssel
         String[] keys = {key.substring(0,16), key.substring(4,20), key.substring(8,24), key.substring(12,28), key.substring(16,32)};
@@ -25,8 +25,30 @@ public class SPNmodeCTR {
         System.out.println("Y-1: " + y);
 
         // SPN: Y mit Schlüssel verschlüsseln
-        spnAlgorithm(y, keys);
+        // Iterationen: Klartext Länge / 16
+        int iterations = x.length() / 16;
+        int start = 0;
+        int end = 16;
 
+        for(int i = 0; i < iterations; i++) {
+            // Y erhöhen (Modulo falls Zahl grösser wird als 15)
+            y = (y + i) % 16;
+            System.out.println(y);
+
+            // Übergabe des y und Schlüssels an SPN
+            String spnResult = spnAlgorithm(y, keys);
+
+            // SPN Resultat XOR Klartext Block
+            String plaintextBlock = x.substring(start, end);
+            int plaintextNumber = Integer.parseInt(plaintextBlock, 2); // Binär zu Integer
+            int  spnResultNumber= Integer.parseInt(spnResult, 2);
+
+            int ctrResult = plaintextNumber ^ spnResultNumber; // XOR Operation
+
+            // Nächster 16 Bit Block des Klartextes
+            start = start + 16;
+            end = end + 16;
+        }
         return null;
     }
 
@@ -34,13 +56,10 @@ public class SPNmodeCTR {
 
     // SPN Algorithm
 
-    public static String spnAlgorithm(int yMinus, String[] keys) {
+    public static String spnAlgorithm(int y, String[] keys) {
         for(int i = 0; i < 4; i++) {
             // Schlüssel
 
-            // y0 = yMinus + i (Modulo falls Zahl grösser wird als 15)
-            int y = (yMinus + i) % 16;
-            System.out.println(y);
 
             // Initialer Weisschritt: y0 XOR k[0]
             y = y ^ Integer.parseInt(keys[0], 2);
