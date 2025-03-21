@@ -60,20 +60,20 @@ public class SPNmodeCTR {
     // SPN Algorithm
 
     public static String spnAlgorithm(int y, String[] keys) {
-        for(int i = 0; i < 4; i++) {
-            // Schlüssel
 
-
-            // Initialer Weisschritt: y0 XOR k[0]
+            // Initialer Weisschritt: y XOR k[0]
             y = y ^ Integer.parseInt(keys[0], 2);
             System.out.println("Weissschritt: " + y);
 
-            // Regulärer Schritt: y1 -> S-Box -> Bitpermutation -> XOR mit k[1]
+            // Regulärer Schritt: y1 k[1]
             y = sBox[y];
 
-            // Regulärer Schritt: y2
-            // Letzte Verkürzte Runde: y3 XOR k[3]
-        }
+            // Regulärer Schritt: y2 k[2]
+
+            // Regulärer Schritt: y3 k[3]
+
+            // Letzte Verkürzte Runde: y4 k[4]
+
         return null;
     }
 
