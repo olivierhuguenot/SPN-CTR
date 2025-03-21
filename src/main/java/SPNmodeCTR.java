@@ -3,12 +3,7 @@ import java.util.Random;
 
 public class SPNmodeCTR {
 
-    final private int r = 4;
-    final private int n = 4;
-    final private int m = 4;
-
-    final static private int[] sBox = {14, 4, 13, 1, 2, 15,
-            11, 8, 3, 10, 6, 12, 5, 9, 0, 7};
+    final static private int[] sBox = {14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7};
 
     final static private int[] sInverse = {14, 3, 4, 8, 1, 12, 10, 15, 7, 13, 9, 6, 11, 2, 5};
 
@@ -36,6 +31,8 @@ public class SPNmodeCTR {
         int start = 0;
         int end = 16;
 
+        String result = "";
+
         for(int i = 0; i < iterations; i++) {
             // Y erhöhen (Modulo falls Zahl grösser wird als 15)
             y = (y + i) % 16;
@@ -50,15 +47,15 @@ public class SPNmodeCTR {
             int  spnResultNumber= Integer.parseInt(spnResult, 2);
 
             int ctrResult = plaintextNumber ^ spnResultNumber; // XOR Operation
+            String ctrResultBinary= Integer.toBinaryString(ctrResult);
+            result = result + ctrResultBinary;
 
             // Nächster 16 Bit Block des Klartextes
             start = start + 16;
             end = end + 16;
         }
-        return null;
+        return result;
     }
-
-
 
     // SPN Algorithm
 
@@ -84,13 +81,5 @@ public class SPNmodeCTR {
         Random random = new Random();
         return random.nextInt(16);
 
-    }
-
-    public static int sInvers(int xi) {
-        return 0;
-    }
-
-    public static int permutation(int xi) {
-        return 0;
     }
 }

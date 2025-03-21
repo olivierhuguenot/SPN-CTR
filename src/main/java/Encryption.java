@@ -4,7 +4,7 @@ public class Encryption {
         // x ganz
         String encoded = asciiEncoding(x);
 
-        // x in 16er blöcke aufteilen
+        // Gesamter Klartext übergeben
         SPNmodeCTR.ctrAlgorithm("0011110011011110", "00111010100101001101011000111111");
 
         // y-1 zufällig wählen
