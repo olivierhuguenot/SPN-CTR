@@ -22,7 +22,8 @@ public class SPNmodeCTR {
         System.out.println("Keys: " + Arrays.toString(keys));
 
         // Das zufällige Y-1 berechnen
-        int y = generateRandomY();
+        Random random = new Random();
+        int y = random.nextInt(32768);
         System.out.println("Y-1: " + y);
 
         // SPN: Y mit Schlüssel verschlüsseln
@@ -81,12 +82,5 @@ public class SPNmodeCTR {
             y = sBox[y];
             y = y ^ Integer.parseInt(keys[4], 2);
         return Integer.toString(y, 2);
-    }
-
-    // Für was?
-    public static int generateRandomY() {
-        Random random = new Random();
-        return random.nextInt(16);
-
     }
 }
