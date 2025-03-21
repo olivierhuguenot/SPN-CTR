@@ -17,7 +17,7 @@ public class SPNmodeCTR {
         // Erhalte durch 16 Teilbarer Klartext
         // Erhalte 16 Bit langer Schlüssel
 
-        // Die 5 Schlüssel
+        // Generiert die 5 Schlüssel und speichert sie im keys array
         String[] keys = {key.substring(0,16), key.substring(4,20), key.substring(8,24), key.substring(12,28), key.substring(16,32)};
         System.out.println("Keys: " + Arrays.toString(keys));
 
@@ -48,7 +48,7 @@ public class SPNmodeCTR {
 
             int ctrResult = plaintextNumber ^ spnResultNumber; // XOR Operation
             String ctrResultBinary= Integer.toBinaryString(ctrResult);
-            result = result + ctrResultBinary;
+            result += ctrResultBinary;
 
             // Nächster 16 Bit Block des Klartextes
             start = start + 16;
@@ -58,25 +58,32 @@ public class SPNmodeCTR {
     }
 
     // SPN Algorithm
-
     public static String spnAlgorithm(int y, String[] keys) {
 
-            // Initialer Weisschritt: y XOR k[0]
+            // Initialer Weisschritt: 1. y XOR k[0]
             y = y ^ Integer.parseInt(keys[0], 2);
             System.out.println("Weissschritt: " + y);
 
-            // Regulärer Schritt: y1 k[1]
+            // Regulärer Schritt: - 1. y in sBox 2. y in permutation 3. XOR mit k[1]
             y = sBox[y];
+            y = permutation[y];
+            y = y ^ Integer.parseInt(keys[1], 2);
 
-            // Regulärer Schritt: y2 k[2]
-
-            // Regulärer Schritt: y3 k[3]
-
-            // Letzte Verkürzte Runde: y4 k[4]
-
-        return null;
+            // Regulärer Schritt: 1. y in sBox 2. y in permutation 3. XOR mit k[2]
+            y = sBox[y];
+            y = permutation[y];
+            y = y ^ Integer.parseInt(keys[2], 2);
+            // Regulärer Schritt: 1. y in sBox 2. y in permutation 3. XOR mit k[3]
+            y = sBox[y];
+            y = permutation[y];
+            y = y ^ Integer.parseInt(keys[3], 2);
+            // Letzte Verkürzte Runde: 1. y in sBox 2. XOR mit k[4]
+            y = sBox[y];
+            y = y ^ Integer.parseInt(keys[4], 2);
+        return Integer.toString(y, 2);
     }
 
+    // Für was?
     public static int generateRandomY() {
         Random random = new Random();
         return random.nextInt(16);

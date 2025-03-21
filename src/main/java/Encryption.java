@@ -32,14 +32,6 @@ public class Encryption {
         return binary;
     }
 
-    public static String ctrAlgorithm() {
-        return null;
-    }
-
-    public static String spnAlgorithm() {
-        return null;
-    }
-
     public static void main(String[] args) {
         System.out.println("Encrypted: " + encrypt("abc", "00111010100101001101011000111111"));
     }
