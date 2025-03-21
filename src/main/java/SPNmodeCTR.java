@@ -23,7 +23,7 @@ public class SPNmodeCTR {
 
         // Das zufällige Y-1 berechnen
         Random random = new Random();
-        int y = random.nextInt(32768);
+        int y = random.nextInt(32768); // 16 Bits lange (0 - 32768)
         System.out.println("Y-1: " + y);
 
         // SPN: Y mit Schlüssel verschlüsseln
