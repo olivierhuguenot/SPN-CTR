@@ -24,6 +24,7 @@ public class SPNmodeCTR {
         // Das zufällige Y-1 berechnen
         Random random = new Random();
         int y = random.nextInt(32768); // 16 Bits lange (0 - 32768)
+        int yMinus1 = y;
         System.out.println("Y-1: " + y);
 
         // SPN: Y mit Schlüssel verschlüsseln
@@ -49,13 +50,13 @@ public class SPNmodeCTR {
 
             int ctrResult = plaintextNumber ^ spnResultNumber; // XOR Operation
             String ctrResultBinary= Integer.toBinaryString(ctrResult);
-            result += ctrResultBinary;
+            result = result + ctrResultBinary;
 
             // Nächster 16 Bit Block des Klartextes
             start = start + 16;
             end = end + 16;
         }
-        return result;
+        return Integer.toBinaryString(yMinus1) + result;
     }
 
     // SPN Algorithm
@@ -130,5 +131,10 @@ public class SPNmodeCTR {
         }
         System.out.println("String nach permuration" + y);
         return res;
+    }
+
+    public static void main(String[] args) {
+        String[] test = {"0001000100101000", "0001001010001000", "0010100010001100", "1000100011000000", "1000110000000000"};
+        System.out.println(spnAlgorithm(Integer.parseInt("0001001010001111"), test));
     }
 }

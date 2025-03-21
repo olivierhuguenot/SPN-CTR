@@ -5,10 +5,8 @@ public class Encryption {
         String encoded = asciiEncoding(x);
 
         // Gesamter Klartext übergeben
-        String result = SPNmodeCTR.ctrAlgorithm("0011110011011110", "00111010100101001101011000111111");
+        String result = SPNmodeCTR.ctrAlgorithm(encoded, k);
         System.out.println("Result: " + result);
-
-        // y-1 zufällig wählen
 
         // fällt ins SPN und ruft Merthoden aus SPN Klasse auf
 
@@ -34,6 +32,6 @@ public class Encryption {
     }
 
     public static void main(String[] args) {
-        System.out.println("Encrypted: " + encrypt("abc", "00111010100101001101011000111111"));
+        System.out.println("Encrypted: " + encrypt("0001001010001111", "00010001001010001000110000000000"));
     }
 }
