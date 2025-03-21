@@ -61,26 +61,74 @@ public class SPNmodeCTR {
     // SPN Algorithm
     public static String spnAlgorithm(int y, String[] keys) {
 
-            // Initialer Weisschritt: 1. y XOR k[0]
-            y = y ^ Integer.parseInt(keys[0], 2);
-            System.out.println("Weissschritt: " + y);
+        //ganzes y von int in String umwandeln
+        String yBinaryString = Integer.toBinaryString(y);
 
-            // Regulärer Schritt: - 1. y in sBox 2. y in permutation 3. XOR mit k[1]
-            y = sBox[y];
-            y = permutation[y];
-            y = y ^ Integer.parseInt(keys[1], 2);
+        // Initialer Weisschritt: 1. y XOR k[0]
+        y = y ^ Integer.parseInt(keys[0], 2);
+        yBinaryString = Integer.toBinaryString(y);
 
-            // Regulärer Schritt: 1. y in sBox 2. y in permutation 3. XOR mit k[2]
-            y = sBox[y];
-            y = permutation[y];
-            y = y ^ Integer.parseInt(keys[2], 2);
-            // Regulärer Schritt: 1. y in sBox 2. y in permutation 3. XOR mit k[3]
-            y = sBox[y];
-            y = permutation[y];
-            y = y ^ Integer.parseInt(keys[3], 2);
-            // Letzte Verkürzte Runde: 1. y in sBox 2. XOR mit k[4]
-            y = sBox[y];
-            y = y ^ Integer.parseInt(keys[4], 2);
-        return Integer.toString(y, 2);
+
+        // Regulärer Schritt: - 1. y in sBox 2. y in permutation 3. XOR mit k[1]
+        int y1 = Integer.parseInt(yBinaryString.substring(0, 4));
+        int y2 = Integer.parseInt(yBinaryString.substring(4, 8));
+        int y3 = Integer.parseInt(yBinaryString.substring(8, 12));
+        int y4 = Integer.parseInt(yBinaryString.substring(12, 16));
+        y1 = sBox[y1];
+        y2 = sBox[y2];
+        y3 = sBox[y3];
+        y4 = sBox[y4];
+        y = Integer.parseInt(permutation(Integer.toBinaryString(y1) + Integer.toBinaryString(y2) + Integer.toBinaryString(y3) + Integer.toBinaryString(y4)));
+        y = y ^ Integer.parseInt(keys[1], 2);
+
+        // Regulärer Schritt: 1. y in sBox 2. y in permutation 3. XOR mit k[2]
+        yBinaryString = Integer.toBinaryString(y);
+        y1 = Integer.parseInt(yBinaryString.substring(0, 4));
+        y2 = Integer.parseInt(yBinaryString.substring(4, 8));
+        y3 = Integer.parseInt(yBinaryString.substring(8, 12));
+        y4 = Integer.parseInt(yBinaryString.substring(12, 16));
+        y1 = sBox[y1];
+        y2 = sBox[y2];
+        y3 = sBox[y3];
+        y4 = sBox[y4];
+        y = Integer.parseInt(permutation(Integer.toBinaryString(y1) + Integer.toBinaryString(y2) + Integer.toBinaryString(y3) + Integer.toBinaryString(y4)));
+        y = y ^ Integer.parseInt(keys[2], 2);
+
+        // Regulärer Schritt: 1. y in sBox 2. y in permutation 3. XOR mit k[3]
+        yBinaryString = Integer.toBinaryString(y);
+        y1 = Integer.parseInt(yBinaryString.substring(0, 4));
+        y2 = Integer.parseInt(yBinaryString.substring(4, 8));
+        y3 = Integer.parseInt(yBinaryString.substring(8, 12));
+        y4 = Integer.parseInt(yBinaryString.substring(12, 16));
+        y1 = sBox[y1];
+        y2 = sBox[y2];
+        y3 = sBox[y3];
+        y4 = sBox[y4];
+        y = Integer.parseInt(permutation(Integer.toBinaryString(y1) + Integer.toBinaryString(y2) + Integer.toBinaryString(y3) + Integer.toBinaryString(y4)));
+        y = y ^ Integer.parseInt(keys[3], 2);
+
+        // Letzte Verkürzte Runde: 1. y in sBox 2. XOR mit k[4]
+        yBinaryString = Integer.toBinaryString(y);
+        y1 = Integer.parseInt(yBinaryString.substring(0, 4));
+        y2 = Integer.parseInt(yBinaryString.substring(4, 8));
+        y3 = Integer.parseInt(yBinaryString.substring(8, 12));
+        y4 = Integer.parseInt(yBinaryString.substring(12, 16));
+        y1 = sBox[y1];
+        y2 = sBox[y2];
+        y3 = sBox[y3];
+        y4 = sBox[y4];
+        y = Integer.parseInt(permutation(Integer.toBinaryString(y1) + Integer.toBinaryString(y2) + Integer.toBinaryString(y3) + Integer.toBinaryString(y4)));
+        y = y ^ Integer.parseInt(keys[4], 2);
+
+        return Integer.toBinaryString(y);
+    }
+
+    public static String permutation(String y) {
+        String res = "";
+        for (int i = 0; i < y.length(); i++) {
+            res += y.charAt(permutation[i]);
+        }
+        System.out.println("String nach permuration" + y);
+        return res;
     }
 }
