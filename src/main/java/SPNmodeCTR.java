@@ -23,7 +23,7 @@ public class SPNmodeCTR {
 
         // Das zufällige Y-1 berechnen
         Random random = new Random();
-        int y = random.nextInt(32768); // 16 Bits lang
+        int y = random.nextInt(65536); // 16 Bits lang
         int yMinus1 = y;
         System.out.println("Y-1: " + yMinus1 + " = " + String.format("%16s", Integer.toBinaryString(yMinus1)).replace(' ', '0'));
 
@@ -36,7 +36,7 @@ public class SPNmodeCTR {
 
         for(int i = 0; i < iterations; i++) {
             // Y erhöhen (Modulo falls Zahl grösser wird als 15)
-            y = (y + i) % 16;
+            y = (y + 1) % 65536;
 
             // Übergabe des y und Schlüssels an SPN
             int spnResult = spnAlgorithm(y, keys);
