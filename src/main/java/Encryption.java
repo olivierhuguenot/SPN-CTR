@@ -24,13 +24,13 @@ public class Encryption {
 
         // Generiert die 5 Schlüssel und speichert sie im keys array
         String[] keys = {key.substring(0,16), key.substring(4,20), key.substring(8,24), key.substring(12,28), key.substring(16,32)};
-        System.out.println("Keys: " + Arrays.toString(keys));
+        //System.out.println("Keys: " + Arrays.toString(keys));
 
         // Das zufällige Y-1 berechnen
         Random random = new Random();
         int y = random.nextInt(65536); // 16 Bits lang
         int yMinus1 = y;
-        System.out.println("Y-1: " + yMinus1 + " = " + String.format("%16s", Integer.toBinaryString(yMinus1)).replace(' ', '0'));
+        //System.out.println("Y-1: " + yMinus1 + " = " + String.format("%16s", Integer.toBinaryString(yMinus1)).replace(' ', '0'));
 
         // Anzahl Iterationen: Klartext Länge / 16
         int iterations = x.length() / 16;
@@ -62,7 +62,7 @@ public class Encryption {
         return String.format("%16s", Integer.toBinaryString(yMinus1)).replace(' ', '0') + result;
     }
 
-    private static int spnAlgorithm(int y, String[] keys) {
+    public static int spnAlgorithm(int y, String[] keys) {
         // ----------------------Initialer Weissschritt-------------------------------
 
         y = y ^ Integer.parseInt(keys[0], 2);
@@ -156,7 +156,7 @@ public class Encryption {
         // y XOR Schlüssel
         y = y ^ Integer.parseInt(keys[4], 2);
 
-        System.out.println("Resultat des SPN: " + String.format("%16s", Integer.toBinaryString(y)).replace(' ', '0'));
+        // System.out.println("Resultat des SPN: " + String.format("%16s", Integer.toBinaryString(y)).replace(' ', '0'));
         return y;
     }
 
@@ -169,7 +169,7 @@ public class Encryption {
         return newY;
     }
 
-    private static String asciiEncoding(String x) {
+    public static String asciiEncoding(String x) {
         // x wird ASCII kodiert
         String binary = "";
         for (int i = 0; i < x.length(); i++) {
@@ -178,12 +178,11 @@ public class Encryption {
         }
 
         // Padding wird wenn nötig hinzugefügt
-        if (binary.length() % 16 == 8) {
-            binary += "1";
-            while (binary.length() % 16 != 0) {
-                binary += "0";
-            }
+        binary += "1";
+        while (binary.length() % 16 != 0) {
+            binary += "0";
         }
+
         System.out.println("Ascii Encoding % 16 = " + binary.length() % 16);
         return binary;
     }
