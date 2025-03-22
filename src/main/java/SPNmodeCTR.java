@@ -23,12 +23,11 @@ public class SPNmodeCTR {
 
         // Das zufällige Y-1 berechnen
         Random random = new Random();
-        int y = random.nextInt(32768); // 16 Bits lange (0 - 32768)
+        int y = random.nextInt(32768); // 16 Bits lang
         int yMinus1 = y;
-        System.out.println("Y-1: " + y);
+        System.out.println("Y-1: " + yMinus1 + " = " + String.format("%16s", Integer.toBinaryString(yMinus1)).replace(' ', '0'));
 
-        // SPN: Y mit Schlüssel verschlüsseln
-        // Iterationen: Klartext Länge / 16
+        // Anzahl Iterationen: Klartext Länge / 16
         int iterations = x.length() / 16;
         int start = 0;
         int end = 16;
@@ -38,29 +37,28 @@ public class SPNmodeCTR {
         for(int i = 0; i < iterations; i++) {
             // Y erhöhen (Modulo falls Zahl grösser wird als 15)
             y = (y + i) % 16;
-            System.out.println(y);
 
             // Übergabe des y und Schlüssels an SPN
-            String spnResult = spnAlgorithm(y, keys);
+            int spnResult = spnAlgorithm(y, keys);
 
             // SPN Resultat XOR Klartext Block
             String plaintextBlock = x.substring(start, end);
             int plaintextNumber = Integer.parseInt(plaintextBlock, 2); // Binär zu Integer
-            int  spnResultNumber= Integer.parseInt(spnResult, 2);
 
-            int ctrResult = plaintextNumber ^ spnResultNumber; // XOR Operation
-            String ctrResultBinary= Integer.toBinaryString(ctrResult);
+            int ctrResult = plaintextNumber ^ spnResult; // XOR Operation
+            String ctrResultBinary = String.format("%16s", Integer.toBinaryString(ctrResult)).replace(' ', '0');
+
             result = result + ctrResultBinary;
 
             // Nächster 16 Bit Block des Klartextes
             start = start + 16;
             end = end + 16;
         }
-        return Integer.toBinaryString(yMinus1) + result;
+        return String.format("%16s", Integer.toBinaryString(yMinus1)).replace(' ', '0') + result;
     }
 
     // SPN Algorithm
-    public static String spnAlgorithm(int y, String[] keys) {
+    public static int spnAlgorithm(int y, String[] keys) {
         // ----------------------Initialer Weissschritt-------------------------------
 
         y = y ^ Integer.parseInt(keys[0], 2);
@@ -154,7 +152,8 @@ public class SPNmodeCTR {
         // y XOR Schlüssel
         y = y ^ Integer.parseInt(keys[4], 2);
 
-        return Integer.toBinaryString(y);
+        System.out.println("Resultat des SPN: " + String.format("%16s", Integer.toBinaryString(y)).replace(' ', '0'));
+        return y;
     }
 
     public static int permutation(int y) {
@@ -165,9 +164,14 @@ public class SPNmodeCTR {
         }
         return newY;
     }
-
+/*
     public static void main(String[] args) {
         String[] test = {"0001000100101000", "0001001010001000", "0010100010001100", "1000100011000000", "1000110000000000"};
         System.out.println("Resultat des SPN: " + spnAlgorithm(Integer.parseInt("0001001010001111", 2), test));
+    }
+ */
+    public static void main(String[] args) {
+        String key = "00010001001010001000110000000000";
+        System.out.println("Resultat des CTR: " + ctrAlgorithm("0001001010001111", key));
     }
 }
