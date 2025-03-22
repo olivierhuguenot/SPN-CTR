@@ -61,80 +61,113 @@ public class SPNmodeCTR {
 
     // SPN Algorithm
     public static String spnAlgorithm(int y, String[] keys) {
+        // ----------------------Initialer Weissschritt-------------------------------
 
-        //ganzes y von int in String umwandeln
-        String yBinaryString = Integer.toBinaryString(y);
-
-        // Initialer Weisschritt: 1. y XOR k[0]
         y = y ^ Integer.parseInt(keys[0], 2);
-        yBinaryString = Integer.toBinaryString(y);
 
+        // ----------------------01 Reguläre Runde------------------------------------
 
-        // Regulärer Schritt: - 1. y in sBox 2. y in permutation 3. XOR mit k[1]
-        int y1 = Integer.parseInt(yBinaryString.substring(0, 4));
-        int y2 = Integer.parseInt(yBinaryString.substring(4, 8));
-        int y3 = Integer.parseInt(yBinaryString.substring(8, 12));
-        int y4 = Integer.parseInt(yBinaryString.substring(12, 16));
+        // 0xF ist 0000 0000 0000 1111 in Binär. Kombiniert mit & Operator erhalten wir nur die letzten 4 Bits
+        int y1 = y & 0xF;           // Letzten 4 Bits extrahieren
+        int y2 = (y >> 4) & 0xF;    // Nächste 4 Bits extrahieren
+        int y3 = (y >> 8) & 0xF;    // Nächste 4 Bits extrahieren
+        int y4 = (y >> 12) & 0xF;   // Erste 4 Bits extrahieren
+
+        // Mit S-Box ersetzen
         y1 = sBox[y1];
         y2 = sBox[y2];
         y3 = sBox[y3];
         y4 = sBox[y4];
-        y = Integer.parseInt(permutation(Integer.toBinaryString(y1) + Integer.toBinaryString(y2) + Integer.toBinaryString(y3) + Integer.toBinaryString(y4)));
+
+        // Wieder zusammensetzen zu 16 Bits
+        y = (y4 << 12) | (y3 << 8) | (y2 << 4) | y1;
+
+        // Permutation
+        y = permutation(y);
+
+        // y XOR Schlüssel
         y = y ^ Integer.parseInt(keys[1], 2);
 
-        // Regulärer Schritt: 1. y in sBox 2. y in permutation 3. XOR mit k[2]
-        yBinaryString = Integer.toBinaryString(y);
-        y1 = Integer.parseInt(yBinaryString.substring(0, 4));
-        y2 = Integer.parseInt(yBinaryString.substring(4, 8));
-        y3 = Integer.parseInt(yBinaryString.substring(8, 12));
-        y4 = Integer.parseInt(yBinaryString.substring(12, 16));
+        // ----------------------02 Reguläre Runde------------------------------------
+
+        // 0xF ist 0000 0000 0000 1111 in Binär. Kombiniert mit & Operator erhalten wir nur die letzten 4 Bits
+        y1 = y & 0xF;           // Letzten 4 Bits extrahieren
+        y2 = (y >> 4) & 0xF;    // Nächste 4 Bits extrahieren
+        y3 = (y >> 8) & 0xF;    // Nächste 4 Bits extrahieren
+        y4 = (y >> 12) & 0xF;   // Erste 4 Bits extrahieren
+
+        // Mit S-Box ersetzen
         y1 = sBox[y1];
         y2 = sBox[y2];
         y3 = sBox[y3];
         y4 = sBox[y4];
-        y = Integer.parseInt(permutation(Integer.toBinaryString(y1) + Integer.toBinaryString(y2) + Integer.toBinaryString(y3) + Integer.toBinaryString(y4)));
+
+        // Wieder zusammensetzen zu 16 Bits
+        y = (y4 << 12) | (y3 << 8) | (y2 << 4) | y1;
+
+        // Permutation
+        y = permutation(y);
+
+        // y XOR Schlüssel
         y = y ^ Integer.parseInt(keys[2], 2);
 
-        // Regulärer Schritt: 1. y in sBox 2. y in permutation 3. XOR mit k[3]
-        yBinaryString = Integer.toBinaryString(y);
-        y1 = Integer.parseInt(yBinaryString.substring(0, 4));
-        y2 = Integer.parseInt(yBinaryString.substring(4, 8));
-        y3 = Integer.parseInt(yBinaryString.substring(8, 12));
-        y4 = Integer.parseInt(yBinaryString.substring(12, 16));
+        // ----------------------03 Reguläre Runde------------------------------------
+
+        // 0xF ist 0000 0000 0000 1111 in Binär. Kombiniert mit & Operator erhalten wir nur die letzten 4 Bits
+        y1 = y & 0xF;           // Letzten 4 Bits extrahieren
+        y2 = (y >> 4) & 0xF;    // Nächste 4 Bits extrahieren
+        y3 = (y >> 8) & 0xF;    // Nächste 4 Bits extrahieren
+        y4 = (y >> 12) & 0xF;   // Erste 4 Bits extrahieren
+
+        // Mit S-Box ersetzen
         y1 = sBox[y1];
         y2 = sBox[y2];
         y3 = sBox[y3];
         y4 = sBox[y4];
-        y = Integer.parseInt(permutation(Integer.toBinaryString(y1) + Integer.toBinaryString(y2) + Integer.toBinaryString(y3) + Integer.toBinaryString(y4)));
+
+        // Wieder zusammensetzen zu 16 Bits
+        y = (y4 << 12) | (y3 << 8) | (y2 << 4) | y1;
+
+        // Permutation
+        y = permutation(y);
+
+        // y XOR Schlüssel
         y = y ^ Integer.parseInt(keys[3], 2);
 
-        // Letzte Verkürzte Runde: 1. y in sBox 2. XOR mit k[4]
-        yBinaryString = Integer.toBinaryString(y);
-        y1 = Integer.parseInt(yBinaryString.substring(0, 4));
-        y2 = Integer.parseInt(yBinaryString.substring(4, 8));
-        y3 = Integer.parseInt(yBinaryString.substring(8, 12));
-        y4 = Integer.parseInt(yBinaryString.substring(12, 16));
+        // ----------------------Letzte Verkürzte Runde----------------------------------
+
+        // 0xF ist 0000 0000 0000 1111 in Binär. Kombiniert mit & Operator erhalten wir nur die letzten 4 Bits
+        y1 = y & 0xF;           // Letzten 4 Bits extrahieren
+        y2 = (y >> 4) & 0xF;    // Nächste 4 Bits extrahieren
+        y3 = (y >> 8) & 0xF;    // Nächste 4 Bits extrahieren
+        y4 = (y >> 12) & 0xF;   // Erste 4 Bits extrahieren
+
+        // Mit S-Box ersetzen
         y1 = sBox[y1];
         y2 = sBox[y2];
         y3 = sBox[y3];
         y4 = sBox[y4];
-        y = Integer.parseInt(permutation(Integer.toBinaryString(y1) + Integer.toBinaryString(y2) + Integer.toBinaryString(y3) + Integer.toBinaryString(y4)));
+
+        // Wieder zusammensetzen zu 16 Bits
+        y = (y4 << 12) | (y3 << 8) | (y2 << 4) | y1;
+
+        // y XOR Schlüssel
         y = y ^ Integer.parseInt(keys[4], 2);
 
         return Integer.toBinaryString(y);
     }
 
-    public static String permutation(String y) {
-        String res = "";
-        for (int i = 0; i < y.length(); i++) {
-            res += y.charAt(permutation[i]);
+    public static int permutation(int y) {
+        int newY = 0;
+        for (int i = 0; i < 16; i++) {
+            int bit = (y >> i) & 1;  // Extrahiere das Bit an Position i
+            newY |= (bit << permutation[i]);  // Setze es an die neue Position
         }
-        System.out.println("String nach permuration" + y);
-        return res;
+        return newY;
     }
 
     public static void main(String[] args) {
         String[] test = {"0001000100101000", "0001001010001000", "0010100010001100", "1000100011000000", "1000110000000000"};
-        System.out.println(spnAlgorithm(Integer.parseInt("0001001010001111"), test));
+        System.out.println("Resultat des SPN: " + spnAlgorithm(Integer.parseInt("0001001010001111", 2), test));
     }
 }
