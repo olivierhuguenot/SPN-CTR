@@ -40,9 +40,6 @@ public class Encryption {
         String result = "";
 
         for(int i = 0; i < iterations; i++) {
-            // Y erhöhen (Modulo falls Zahl grösser wird als 15)
-            y = (y + 1) % 65536;
-
             // Übergabe des y und Schlüssels an SPN
             int spnResult = spnAlgorithm(y, keys);
 
@@ -54,6 +51,9 @@ public class Encryption {
             String ctrResultBinary = String.format("%16s", Integer.toBinaryString(ctrResult)).replace(' ', '0');
 
             result = result + ctrResultBinary;
+
+            // Y erhöhen (Modulo falls Zahl grösser wird als 15)
+            y = (y + 1) % 65536;
 
             // Nächster 16 Bit Block des Klartextes
             start = start + 16;
