@@ -174,7 +174,7 @@ public class Encryption {
         String binary = "";
         for (int i = 0; i < x.length(); i++) {
             // Füllt mit 0en auf wenn das kodierte ASCII-Zeichen nicht 8-Bit lang ist
-            binary += String.format("%08d", Integer.parseInt(Integer.toBinaryString(x.charAt(i))));
+            binary += String.format("%8s", Integer.toBinaryString(x.charAt(i))).replace(' ', '0');
         }
 
         // Padding wird wenn nötig hinzugefügt
@@ -184,6 +184,7 @@ public class Encryption {
                 binary += "0";
             }
         }
+        System.out.println("Ascii Encoding % 16 = " + binary.length() % 16);
         return binary;
     }
 }
