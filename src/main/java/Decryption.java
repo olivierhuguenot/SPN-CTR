@@ -12,31 +12,33 @@ public class Decryption {
         int yBlocks = y.length() / 16;
         String[] ys = new String[yBlocks];
 
+
         // alle Blöcke in ein array speichern von y-1 bis yn-1
         for (int i = 0; i < yBlocks; i++) {
             int index1 = i * 16;
             int index2 = (i + 1) * 16;
             ys[i] = y.substring(index1, index2);
         }
+        System.out.println("ys: " + Arrays.toString(ys));
 
         // für jeden Klartextblock die SPN Encryption brauchen und mit yi XORen
         int yMinus1 = Integer.parseInt(ys[0], 2);
 
         for (int i = 0; i < ys.length-1; i++) {
             int yTemp = Integer.parseInt(ys[i+1], 2);
-            System.out.println("yTemp is: " + yTemp);
-            int xTemp = Encryption.spnAlgorithm(yMinus1 + i % 65536, keys) ^ yTemp;
-            System.out.println("xTemp is: " + xTemp);
+            int xTemp = Encryption.spnAlgorithm(yMinus1, keys) ^ yTemp;
             res += String.format("%16s", Integer.toBinaryString(xTemp)).replace(' ', '0');
+            System.out.println("y-1: " + yMinus1);
+            yMinus1 = (yMinus1 + 1) % 65536;
         }
 
         // den Klartext noch als Ascii Zeichen decoden
+        System.out.println("Resultat nach SPN: " + res);
         return asciiDecoding(res);
     }
     public static String asciiDecoding(String binary) {
 
         // Padding entfernen
-
         int counter = 0;
         int l = binary.length();
         while (binary.charAt(binary.length()-1) == '0') {
