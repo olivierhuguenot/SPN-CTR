@@ -29,7 +29,7 @@ public class Decryption {
             int yn = Integer.parseInt(ys[i+1], 2);
             int xn = Encryption.spnAlgorithm(yMinus1, keys) ^ yn;
             System.out.println("xTemp: " + xn);
-            res = Integer.toBinaryString(xn) + res;
+            res += String.format("%16s", Integer.toBinaryString(xn)).replace(' ', '0');
             System.out.println("res: " + res + " - Länge res: " + res.length());
             yMinus1 = (yMinus1 + 1) % 65536;
         }
@@ -42,6 +42,7 @@ public class Decryption {
     public static String asciiDecoding(String binary) {
 
         // Padding entfernen
+        /*
         int counter = 0;
         int l = binary.length();
         while (binary.charAt(binary.length()-1) == '0') {
@@ -51,7 +52,7 @@ public class Decryption {
         binary = binary.substring(0, binary.length()-1);
 
         System.out.println("Zeichen ohne Padding: " + binary.length());
-
+        */
         // 8er Blöcke des ganzen String nehmen dann zu int casten und wieder char für char zu einem String konkatinieren
         String result = "";
         for (int i = 0; i < binary.length(); i+=8) {
