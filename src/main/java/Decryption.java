@@ -12,7 +12,7 @@ public class Decryption {
         int yBlocks = y.length() / 16;
         String[] ys = new String[yBlocks];
 
-        // alle Blöcke in ein array speichern von y-1 bis yn-1
+        // Alle Chiffretextblöcke in ein array speichern von y-1 bis yn-1
         for (int i = 0; i < yBlocks; i++) {
             int index1 = i * 16;
             int index2 = (i + 1) * 16;
@@ -20,7 +20,8 @@ public class Decryption {
         }
         System.out.println("ys: " + Arrays.toString(ys));
 
-        // für jeden Klartextblock die SPN Encryption brauchen und mit yi XORen
+        // Y-1 und Schlüssel in das SPN geben
+        // Das SPN Resultat XOR Chiffretextblock
         int yMinus1 = Integer.parseInt(ys[0], 2);
         System.out.println("yMinus1: " + yMinus1);
 
@@ -33,7 +34,7 @@ public class Decryption {
             yMinus1 = (yMinus1 + 1) % 65536;
         }
 
-        // den Klartext noch als Ascii Zeichen decoden
+        // den Klartext Als Ascii Zeichen decoden
         System.out.println("Resultat nach SPN: " + res + "Länge nach SPN: " + res.length());
         return asciiDecoding(res);
     }
