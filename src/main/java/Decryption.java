@@ -12,7 +12,6 @@ public class Decryption {
         int yBlocks = y.length() / 16;
         String[] ys = new String[yBlocks];
 
-
         // alle Blöcke in ein array speichern von y-1 bis yn-1
         for (int i = 0; i < yBlocks; i++) {
             int index1 = i * 16;
@@ -23,19 +22,22 @@ public class Decryption {
 
         // für jeden Klartextblock die SPN Encryption brauchen und mit yi XORen
         int yMinus1 = Integer.parseInt(ys[0], 2);
+        System.out.println("yMinus1: " + yMinus1);
 
         for (int i = 0; i < ys.length-1; i++) {
-            int yTemp = Integer.parseInt(ys[i+1], 2);
-            int xTemp = Encryption.spnAlgorithm(yMinus1, keys) ^ yTemp;
-            res += String.format("%16s", Integer.toBinaryString(xTemp)).replace(' ', '0');
-            System.out.println("y-1: " + yMinus1);
+            int yn = Integer.parseInt(ys[i+1], 2);
+            int xn = Encryption.spnAlgorithm(yMinus1, keys) ^ yn;
+            System.out.println("xTemp: " + xn);
+            res = Integer.toBinaryString(xn) + res;
+            System.out.println("res: " + res + " - Länge res: " + res.length());
             yMinus1 = (yMinus1 + 1) % 65536;
         }
 
         // den Klartext noch als Ascii Zeichen decoden
-        System.out.println("Resultat nach SPN: " + res);
+        System.out.println("Resultat nach SPN: " + res + "Länge nach SPN: " + res.length());
         return asciiDecoding(res);
     }
+
     public static String asciiDecoding(String binary) {
 
         // Padding entfernen
@@ -46,6 +48,8 @@ public class Decryption {
             binary = binary.substring(0, l-counter);
         }
         binary = binary.substring(0, binary.length()-1);
+
+        System.out.println("Zeichen ohne Padding: " + binary.length());
 
         // 8er Blöcke des ganzen String nehmen dann zu int casten und wieder char für char zu einem String konkatinieren
         String result = "";

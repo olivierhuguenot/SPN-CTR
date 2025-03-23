@@ -16,7 +16,5 @@ public class Cryptosystem {
         String key = "00010001001010001000110000000000";
         String[] keys = {key.substring(0,16), key.substring(4,20), key.substring(8,24), key.substring(12,28), key.substring(16,32)};
         System.out.println("SPN Test: " + (Integer.parseInt("1010111010110100", 2) == Encryption.spnAlgorithm(Integer.parseInt("0001001010001111", 2), keys)));
-        System.out.println("SPN Entschlüsseln: " + Integer.toBinaryString(Encryption.spnAlgorithm(Integer.parseInt("1010111010110100", 2), keys)));
-        System.out.println("SPN Verschlüsseln: " + Integer.toBinaryString(Encryption.spnAlgorithm(Integer.parseInt("0001001010001111", 2), keys)));
     }
 }
